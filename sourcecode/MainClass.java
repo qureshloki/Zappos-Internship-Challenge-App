@@ -140,8 +140,11 @@ public class MainClass {
 	
 	/*
 	 * Recursive function to find all the product combinations..
-	 * It does a depth first search... It has few conditions which limit the branching..
-	 * It finds product combinations that are closest to the budget (above or below)
+	 * It does a depth first search... It has few conditions which limit the branching/recursion..
+	 * It finds product combinations that are closest to the budget (above or below)..
+	 * It wont display duplicate products in a combination..
+	 * e.g. if user requires 3 items and total available items are also 3 but there is one duplicate (i.e same productid,same price but different styleid),
+	 * the algorithm will display 0 combinations instead of giving 1 combination of all items..!
 	 */
 	
 	public void getCombination(int itemsLeft,int startIndex,float currSum,int[] currentCombination)
@@ -196,8 +199,14 @@ public class MainClass {
 				float temp=itemsLeft*pCurr.price + currSum - budget;
 				if(!ignoreProdId && temp-absMinDifference < precision)
 				{	
-					if(itemsLeft==1 && Math.abs(temp)-absMinDifference > precision)
-						return;
+					if(itemsLeft==1)
+						{
+						if(Math.abs(temp)-absMinDifference > precision)
+							return;
+						}							
+					else if(i==productsArrEndIndex)
+							return;
+					
 					currentCombination[itemsLeft-1]=i;
 					getCombination(itemsLeft-1,i+1,currSum+pCurr.price,currentCombination);					
 				}	
